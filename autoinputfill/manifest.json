@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Auto Input Filler",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Auto-inputs text into the focused input field on the page.",
   "permissions": ["activeTab", "storage", "tabs"],
   "browser_action": {
