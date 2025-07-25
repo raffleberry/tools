@@ -1,23 +1,34 @@
 {
   "manifest_version": 2,
   "name": "Auto Input Filler",
-  "version": "1.2",
+  "version": "1.4",
   "description": "Auto-inputs text into the focused input field on the page.",
-  "permissions": ["activeTab", "storage", "tabs"],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": {
       "128": "icon.png"
     }
   },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{2da4005b-9c72-46de-8858-9b11392f717b}"
+    }
+  },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   },
   "commands": {
     "autofill-text": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Y",
-        "mac": "Command+Shift+Y"
+        "default": "Ctrl+Shift+Comma",
+        "mac": "MacCtrl+Shift+Comma"
       },
       "description": "Autofill input field with saved text"
     }
