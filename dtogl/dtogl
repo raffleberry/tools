@@ -8,11 +8,10 @@ STATE_FILE=~/.local/state/dtogl/index
 external="HDMI-A-1"
 internal="eDP-1"
 # check if external is connected
-kscreen-doctor -o | grep -o Output.*$external
-if [ $? -ne 0 ]; then
-    return
+KSCREEN_STATUS=$(kscreen-doctor -o)
+if [[ ! "$KSCREEN_STATUS" == *"$external"* ]]; then
+    exit 0
 fi
-
 
 index=0
 if [ -f ~/.local/state/dtogl/index ]; then
