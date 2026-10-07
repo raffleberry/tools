@@ -8,10 +8,11 @@ STATE_FILE=~/.local/state/dtogl/index
 external="HDMI-A-1"
 internal="eDP-1"
 # check if external is connected
-KSCREEN_STATUS=$(kscreen-doctor -o)
-if [[ ! "$KSCREEN_STATUS" == *"Output: $external"* ]]; then
-    exit 0
+kscreen-doctor -o | grep -o Output.*$external
+if [ $? -ne 0 ]; then
+    return
 fi
+
 
 index=0
 if [ -f ~/.local/state/dtogl/index ]; then
@@ -22,6 +23,10 @@ index=0
 if [[ -f "$STATE_FILE" ]]; then
     read -r index < "$STATE_FILE"
 fi
+
+index=$(( (index + 1) % 3 ))
+echo "$index" > "$STATE_FILE"
+
 
 if [ $index -eq 0 ]; then
     # internal only
@@ -53,3 +58,4 @@ elif [ $index -eq 2 ]; then
         output.$internal.mode.1920x1080@60 \
         output.$internal.position.0,0 \
         output.$internal.scale.1.5
+fi
