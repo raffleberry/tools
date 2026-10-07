@@ -1,0 +1,55 @@
+#!/bin/bash
+
+mkdir -p ~/.local/state/dtogl
+STATE_FILE=~/.local/state/dtogl/index
+
+# find the .position from systemsettings -> display -> \
+# drag one of the displays to see the pixel position
+external="HDMI-A-1"
+internal="eDP-1"
+# check if external is connected
+KSCREEN_STATUS=$(kscreen-doctor -o)
+if [[ ! "$KSCREEN_STATUS" == *"Output: $external"* ]]; then
+    exit 0
+fi
+
+index=0
+if [ -f ~/.local/state/dtogl/index ]; then
+    index=$(cat ~/.local/state/dtogl/index)
+fi
+
+index=0
+if [[ -f "$STATE_FILE" ]]; then
+    read -r index < "$STATE_FILE"
+fi
+
+if [ $index -eq 0 ]; then
+    # internal only
+    kscreen-doctor \
+        output.$internal.enable \
+        output.$internal.primary \
+        output.$internal.mode.1920x1080@60 \
+        output.$internal.position.0,0 \
+        output.$internal.scale.1.5 \
+        output.$external.disable 
+elif [ $index -eq 1 ]; then
+    # external only
+    kscreen-doctor \
+        output.$external.enable \
+        output.$external.primary \
+        output.$external.mode.1920x1080@60 \
+        output.$external.position.0,0 \
+        output.$external.scale.1.25 \
+        output.$internal.disable
+elif [ $index -eq 2 ]; then
+    # external primary internal secondary(left side)
+    kscreen-doctor \
+        output.$external.enable \
+        output.$external.primary \
+        output.$external.mode.1920x1080@60 \
+        output.$external.position.1280,0 \
+        output.$external.scale.1.25 \
+        output.$internal.enable \
+        output.$internal.mode.1920x1080@60 \
+        output.$internal.position.0,0 \
+        output.$internal.scale.1.5
